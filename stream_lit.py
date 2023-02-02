@@ -13,7 +13,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain import OpenAI, VectorDBQA
 from PyPDF2 import PdfReader
 from langchain.chains.question_answering import load_qa_chain
-
+import os
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 st.title('Chatur GPT')
 
