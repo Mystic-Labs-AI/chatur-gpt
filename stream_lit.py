@@ -7,14 +7,17 @@
 
 import streamlit as st
 import os
+
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
+
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores.faiss import FAISS
 from langchain.text_splitter import CharacterTextSplitter
 from langchain import OpenAI, VectorDBQA
 from PyPDF2 import PdfReader
 from langchain.chains.question_answering import load_qa_chain
-import os
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
 
 st.title('Chatur GPT')
 
@@ -23,7 +26,7 @@ label='Upload the file that you want chatur to read'
 filename= st.file_uploader(label, type ='pdf' )
 
 print(filename)
-@st.cache
+
 def func(filename):
     if(filename!=None):
 
@@ -55,14 +58,20 @@ def func(filename):
         return new_list
 
         
+def newList():
+    new_list=func(filename)
+    embeddings = OpenAIEmbeddings()
 
-new_list=func(filename)
-embeddings = OpenAIEmbeddings()
+    return new_list,embeddings
+
+new_list,embeddings= newList()
 
 if(new_list!=None):
+
+    if(len(new_list)!=0):
+
+
         docsearch = FAISS.from_texts(new_list, embeddings)
-
-
         qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
         qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
 
@@ -77,6 +86,7 @@ label1= 'Enter what you want to ask Chatur'
 output2=''
 
 def onclickfunc():
+    global qa
 
     with st.spinner('Chatur is looking in the docs'):
     
@@ -101,7 +111,92 @@ def onclickfunc():
 
 input1 = st.text_input(label1)
 print(input1)
-onclickfunc()
+
+
+if filename==None:
+    st.session_state.output='Upload the file'
+    
+
+else:
+    if new_list==None:
+        new_list,embeddings=newList()
+        
+
+    else:
+        if (filename!=None and len(new_list)==0):
+                st.session_state.output='File is not readable'
+
+            
+
+
+        else:
+
+            if qa==None:
+                docsearch = FAISS.from_texts(new_list, embeddings)
+                qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+                qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
+                print("last step")
+            else:
+                onclickfunc()
+
+
+
+
+
+if (filename==None):
+        st.session_state.output='Upload the file'
+        
+        
+
+
+        if (filename!=None and new_list==None ):
+            new_list,embeddings=newList()
+            docsearch = FAISS.from_texts(new_list, embeddings)
+            qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+            qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
+            onclickfunc()
+            print('st1')
+
+
+            if(filename!=None and docsearch==None):
+                docsearch = FAISS.from_texts(new_list, embeddings)
+                qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+                qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
+                onclickfunc()
+
+
+
+
+        
+            else:
+                qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+                qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
+                onclickfunc()
+
+        else:
+            if(filename!= None and docsearch==None):
+                docsearch = FAISS.from_texts(new_list, embeddings)
+                qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+                qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
+                onclickfunc()
+
+
+
+
+        
+            # else:
+
+            #     qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+            #     qa = VectorDBQA(combine_documents_chain=qa_chain, vectorstore=docsearch)
+            #     onclickfunc()
+
+
+
+
+
+
+
+
 
 # st.write("Chatur found out:\n", st.session_state["output"])
 # output1= st.button('Ask Chatur', on_click= onclickfunc)
