@@ -231,5 +231,5 @@ if (filename==None):
 
 st.text_area('Chatur found out: ',value= st.session_state.output, disabled= True)
 
-st.write("Tell us your usecase to build [Mail Us](mailto:f20200586@goa.bits-pilani.ac.in?subject=Loved%20your%20Chatbot!%20would%20like%20to%20make%20the%20same%20for%20my%20usecase&body=we%20can%20see%20a%20usecase%20in%20our%20product%20and%20would%20like%20to%20contact%20you%20on%20the%20same%0D%0Ahere%20is%20our%20usecase%3A%0D%0A%0D%0A)")
+st.write("Tell us your usecase to build [Mail Us](wa.me/917977814522?text=Loved%20your%20chatbot%20my%20usecase%20is)")
 
