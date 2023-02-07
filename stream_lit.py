@@ -7,7 +7,6 @@
 
 import streamlit as st
 import os
-
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 
@@ -17,6 +16,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain import OpenAI, VectorDBQA
 from PyPDF2 import PdfReader
 from langchain.chains.question_answering import load_qa_chain
+st.set_page_config(page_title= "Chatur-GPT", page_icon="✨" , layout="centered", initial_sidebar_state="auto", menu_items=None)
+
 
 
 st.title('Chatur GPT')
@@ -26,6 +27,33 @@ label='Upload the file that you want chatur to read'
 filename= st.file_uploader(label, type ='pdf' )
 
 print(filename)
+
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden; }
+        footer:after {
+	content:'Made with ❤️ by Mystic Labs'; 
+	visibility: visible;
+	display: block;
+	position: relative;
+	#background-color: red;
+	padding: 5px;
+	top: 2px;
+}
+        </style>
+        
+
+
+
+        """
+
+
+st.markdown(hide_menu_style, unsafe_allow_html=True)
+
+
+
+
 
 def func(filename):
     if(filename!=None):
@@ -202,3 +230,6 @@ if (filename==None):
 # output1= st.button('Ask Chatur', on_click= onclickfunc)
 
 st.text_area('Chatur found out: ',value= st.session_state.output, disabled= True)
+
+st.write("Tell us your usecase to build [Mail Us](mailto:daksh@cryptocasehq.com?subject=Loved%20your%20Chatbot!%20would%20like%20to%20make%20the%20same%20for%20my%20usecase&body=we%20can%20see%20a%20usecase%20in%20our%20product%20and%20would%20like%20to%20contact%20you%20on%20the%20same%0D%0Ahere%20is%20our%20usecase%3A%0D%0A%0D%0A)")
+
