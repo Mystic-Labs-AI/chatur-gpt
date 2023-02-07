@@ -231,5 +231,5 @@ if (filename==None):
 
 st.text_area('Chatur found out: ',value= st.session_state.output, disabled= True)
 
-st.write("Tell us your usecase to build [Mail Us](wa.me/917977814522?text=Loved%20your%20chatbot%20my%20usecase%20is)")
+st.write("Tell us your usecase to build [WhatsApp Me](https://wa.me/917977814522?text=Loved%20your%20chatbot%20my%20usecase%20is)")
 
